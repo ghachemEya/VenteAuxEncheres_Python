@@ -1,0 +1,11 @@
+Référence Objet  Prix Départ Dernier Prix  Etat  Acheteur
+
+2                |    800         |    800            |    Disponible     |    N/A
+2                |    800         |    800            |    Disponible     |    N/A
+2                |    8000        |    8000           |    Disponible     |    N/A
+2                |    8000        |    8000           |    Disponible     |    N/A
+2                |    8000        |    8000           |    Disponible     |    N/A
+2                |    8000        |    8000           |    Disponible     |    N/A
+2                |    800         |    800            |    Disponible     |    N/A
+2                |    800         |    900            |    Vendu          |    namee
+3                |    9000        |    10000000000    |    Vendu          |    namee

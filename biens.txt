@@ -1,6 +1,0 @@
-Référence Objet  Prix Départ Dernier Prix  Etat  Acheteur
-1                    150        1200       Vendu     1
-2  13000  14000 Disponible 0
-3	         250	        500       Vendu      2
-4		500		500	  Vendu	     1
-	

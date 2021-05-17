@@ -8,7 +8,7 @@ import os
 HOST = '192.168.1.49'
 PORT = 50000
 counter = 0         # compteur de connexions actives
-dernierPrix = "0"
+
 
 mutex = Lock()
 
@@ -25,13 +25,23 @@ class Server(threading.Thread):
                         break
                   message = "%s> %s" % (nom, msgClient)
                   print(message)
+                  # Dialogue avec le client :
+                  dernierPrix = 0
+                  L=self.consulterBiens(dernierPrix)
+                  msgServeur = "id de l'article est %s et son prix de départ est %s" % (L[0], L[1])
+                  connexion.send(msgServeur.encode("Utf8"))
+                  msgClient = connexion.recv(1024).decode("Utf8")
+                  #Test sur le nv prix proposer par le client
+                  dernierPrix = th.comparaisonPrix(msgClient,L)
+                  #Modification du prix du départ 
+                  L=th.consulterBiens(dernierPrix)
+                  #Attendre 30 secondes et les clients ne reponds pas cloturer la vente aux encheres 
+                  #pour cette article en question
             # Faire suivre le message à tous les autres clients :
                   #debut section critique 
-                  mutex.acquire()
                   for cle in conn_client:
                         if cle != nom: # ne pas le renvoyer à l'émetteur
                               conn_client[cle].send(message.encode("Utf8"))
-                  mutex.release()
                   #fin section critique
             # Fermeture de la connexion :
             self.connexion.close() # couper la connexion côté serveur
@@ -123,32 +133,23 @@ except socket.error:
 while 1:
             # 3) Attente de la requête de connexion d'un client
       print("Serveur prêt, en attente de requêtes ...")
-      mySocket.listen(5)
+      mySocket.listen(1000)
       # Attente et prise en charge des connexions demandées par les clients :
       conn_client = {}    # dictionnaire des connexions clients    
+      print(conn_client)
       while 1:
             connexion, adresse = mySocket.accept()
             # Créer un nouvel objet thread pour gérer la connexion :
             th = Server(connexion)
             th.start()
-           
-            L=th.consulterBiens(dernierPrix)
             # Mémoriser la connexion dans le dictionnaire :
             it = th.getName() # identifiant du thread
             conn_client[it] = connexion
             print("Client %s connecté, adresse IP %s, port %s." %\
                         (it, adresse[0], adresse[1]))
-           
-            # Dialogue avec le client :
-            msgServeur = "id de l'article est %s et son prix de départ est %s" % (L[0], L[1])
-            connexion.send(msgServeur.encode("Utf8"))
-            msgClient = connexion.recv(1024).decode("Utf8")
-            #Test sur le nv prix proposer par le client
-            dernierPrix = th.comparaisonPrix(msgClient,L)
-            #Modification du prix du départ 
-            L=th.consulterBiens(dernierPrix)
-            #Attendre 30 secondes et les clients ne reponds pas cloturer la vente aux encheres 
-            #pour cette article en question
+            msg = "Vous êtes connecté. Envoyez vos messages."
+            connexion.send(msg.encode("Utf8"))
+            
       # 6) Fermeture de la connexion :
       connexion.send("fin".encode("Utf8"))
       print("Connexion interrompue.")
