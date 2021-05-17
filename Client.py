@@ -19,7 +19,7 @@ class ClientReception(threading.Thread):
             if not message_recu or message_recu.upper() =="FIN":
                 break
             # Le thread <réception> se termine ici.
-            # On force la fermeture du thread <émission> :
+        # On force la fermeture du thread <émission> :
         th_E._stop()
         print("Client arrêté. Connexion interrompue.")
         self.connexion.close()
@@ -43,8 +43,8 @@ mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
     mySocket.connect((HOST,PORT))
 except socket.error:
-      print("La connexion a échoué.")
-      sys.exit()
+    print("La connexion a échoué.")
+    sys.exit()
 print("Connexion établie avec le serveur.")
 
 # Dialogue avec le serveur : on lance deux threads pour gérer

@@ -103,16 +103,9 @@ class Server (threading.Thread):
             file = open('Factures.txt', 'w')
             file.writelines(lignes)
 
-      
-
-
-            
-
 
 # 1) création du socket :
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mySocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
-mythreads = [] 
 # 2) liaison du socket à une adresse précise :14#
 try:
      mySocket.bind((HOST, PORT))
@@ -131,7 +124,6 @@ while 1:
             # Créer un nouvel objet thread pour gérer la connexion :
             th = Server(connexion)
             th.start()
-            mythreads.append(th)
             L=th.consulterBiens(dernierPrix)
             # Mémoriser la connexion dans le dictionnaire :
             it = th.getName() # identifiant du thread
@@ -148,7 +140,7 @@ while 1:
             L=th.consulterBiens(dernierPrix)
             #Attendre 30 secondes et les clients ne reponds pas cloturer la vente aux encheres 
             #pour cette article en question
-            # 6) Fermeture de la connexion :
+      # 6) Fermeture de la connexion :
       connexion.send("fin".encode("Utf8"))
       print("Connexion interrompue.")
       connexion.close()
@@ -157,6 +149,3 @@ while 1:
       ch = input("<R>ecommencer <T>erminer ? ")
       if ch.upper() =='T':        
          break
-
-for t in mythreads:
-      t.join()
