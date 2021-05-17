@@ -78,3 +78,33 @@ identificateur Acheteur  Proposition Valeur   Résultat
 2 990 echec 
 
 2 990 echec 
+
+2 990 echec 
+
+2 990 echec 
+
+2 990 echec 
+
+2 1000 echec 
+
+2 10 echec 
+
+2 40 echec 
+
+2 990 echec 
+
+2 990 echec 
+
+2 990 echec 
+
+2 1000 echec 
+
+2 5000 echec 
+
+2 48000 echec 
+
+2 7 echec 
+
+2 993 echec 
+
+2 1000 echec 

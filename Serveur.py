@@ -3,12 +3,16 @@
 import sys
 import socket
 import threading
+from threading import Lock
 import os 
 HOST = '192.168.1.49'
 PORT = 50000
 counter = 0         # compteur de connexions actives
 dernierPrix = "0"
-class Server (threading.Thread):
+
+mutex = Lock()
+
+class Server(threading.Thread):
       def __init__ (self, conn) :
             threading.Thread.__init__(self)
             self.connexion = conn
@@ -22,10 +26,13 @@ class Server (threading.Thread):
                   message = "%s> %s" % (nom, msgClient)
                   print(message)
             # Faire suivre le message à tous les autres clients :
+                  #debut section critique 
+                  mutex.acquire()
                   for cle in conn_client:
                         if cle != nom: # ne pas le renvoyer à l'émetteur
                               conn_client[cle].send(message.encode("Utf8"))
-
+                  mutex.release()
+                  #fin section critique
             # Fermeture de la connexion :
             self.connexion.close() # couper la connexion côté serveur
             del conn_client[nom] # supprimer son entrée dans le dictionnaire
@@ -106,6 +113,7 @@ class Server (threading.Thread):
 
 # 1) création du socket :
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
 # 2) liaison du socket à une adresse précise :14#
 try:
      mySocket.bind((HOST, PORT))
@@ -118,19 +126,20 @@ while 1:
       mySocket.listen(5)
       # Attente et prise en charge des connexions demandées par les clients :
       conn_client = {}    # dictionnaire des connexions clients    
-
       while 1:
             connexion, adresse = mySocket.accept()
             # Créer un nouvel objet thread pour gérer la connexion :
             th = Server(connexion)
             th.start()
+           
             L=th.consulterBiens(dernierPrix)
             # Mémoriser la connexion dans le dictionnaire :
             it = th.getName() # identifiant du thread
             conn_client[it] = connexion
             print("Client %s connecté, adresse IP %s, port %s." %\
                         (it, adresse[0], adresse[1]))
-            # Dialogue avec le client :   
+           
+            # Dialogue avec le client :
             msgServeur = "id de l'article est %s et son prix de départ est %s" % (L[0], L[1])
             connexion.send(msgServeur.encode("Utf8"))
             msgClient = connexion.recv(1024).decode("Utf8")
