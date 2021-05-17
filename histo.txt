@@ -1,0 +1,70 @@
+identificateur Acheteur  Proposition Valeur   Résultat
+2 920 echec 
+
+2 1820 echec 
+
+2 920 echec 
+
+2 920 echec 
+
+2 920 echec 
+
+2 10 echec 
+
+2 920 echec 
+
+2 820 echec 
+
+2 920 echec 
+
+2 200 echec 
+
+2 300 echec 
+
+2 900 echec 
+
+2 100 echec 
+
+2 100 echec 
+
+2 1000 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 500 echec 
+
+2 1000 echec 
+
+2 1000 echec 
+
+2 400 echec 
+
+2 600 echec 
+
+2 50 echec 
+
+2 1050 echec 
+
+2 550 echec 
+
+2 550 echec 
+
+2 550 echec 
+
+2 550 echec 
+
+2 1000 echec 
+
+2 1000 echec 
+
+2 1000 echec 
