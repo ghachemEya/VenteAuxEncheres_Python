@@ -1,11 +1,12 @@
 
-#!/usr/bin/env python3
-"""Server for multithreaded (asynchronous) chat application."""
+"""Server for multithreaded (asynchronous) de vente aux enchere -  application."""
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 from threading import Timer
 from datetime import datetime
 import select,time,threading
+import os
+
 auction = False
 reference= "test"
 bidder =""
@@ -23,6 +24,7 @@ class TestThreading(object):
     global joins
     global prix
     global prixinit
+
     def __init__(self, interval=1):
         self.interval = interval
 
@@ -42,7 +44,7 @@ class TestThreading(object):
             
             
             if ((datetime.now()-bidtime).seconds==25 and not done):
-                diffuserj(bytes("The auction will end in 10 seconds" , "utf8"))
+                diffuserj(bytes("La vente au enchère va cloturer dans 10 seconds" , "utf8"))
                 done = True
             if ((datetime.now()-bidtime).seconds>35): #auction ended
                 bien = open("bien.txt","a")
@@ -72,8 +74,8 @@ class TestThreading(object):
                 
                 else :  #no bidder . produit disponible
                     if auction:
-                        diffuserj(bytes("The auction has ended without a winner", "utf8"))
-                        print("The auction has ended without a winner")
+                        diffuserj(bytes("Vente aux enchere a fini sans gagnant", "utf8"))
+                        print("Vente aux enchere a fini sans gagnant")
                         bien.write(strbien(reference,prixinit,prixinit,"Disponible","N/A\n"))
                         bien.close()
                         auction = False
@@ -95,6 +97,7 @@ class menu(object):
     global prix
     global prixinit
     global done
+
     def __init__(self, interval=1):
         self.interval = interval
 
@@ -113,26 +116,26 @@ class menu(object):
         while True:
             # More statements comes here
             if not auction :
-                print("1- new Auction.")
+                print("1-Débuter une vente aux encheres")
                 print("2-Consulter la liste des biens  ")
                 print("3-Consulter la facture d'un acheteur ")
                 print("4-Consulter l'historique des propositions ")
-                print("5- exit")
+                print("5-Quitter")
                 reponse = input()
                 if (reponse =="1"):
                     reference = input("reference =")
-                    prix = int(input("starting price = "))
+                    prix = int(input("Prix initial = "))
                     prixinit= prix
                     auction = True
                     done = False
                     histo = open("histo.txt","a")
                     histo.write("------------------\n")
-                    histo.write("Priduit "+reference+" :\n")
+                    histo.write("Produit "+reference+" :\n")
                     histo.close()
                     bidtime = datetime.now()
                     tr = TestThreading()
-                    diffuser(bytes("A new auction has been started : "+reference+str(prix), "utf8"))
-                    diffuser(bytes("To join the auction use /join.", "utf8"))
+                    diffuser(bytes("La vente aux encheres est débuter avec cette  : "+reference+str(prix), "utf8"))
+                    diffuser(bytes("Pour integrer cette cente au enchere veuillez tapez  /join dans le TexteField.", "utf8"))
                     
                     print("en attente de connection...")
                 elif (reponse=="2"):
@@ -141,12 +144,6 @@ class menu(object):
                     for i in l :
                         print(i)
                     bien.close()
-                    #bien.read(strbien(reference,prixinit,prix,etat,bidder+"\n")
-                   # bien.close()
-                #elif (reponse=="3")
-                   # fact = open("factures.txt","r")
-                    #fact.read(strfact(bidder,prix)+"\n")
-                    #fact.close()
                 elif (reponse=="4"):
                     histo = open("histo.txt","r")
                     l = histo.readlines()
@@ -155,7 +152,7 @@ class menu(object):
                     histo.close()
                 elif (reponse=="3"):
                     ach =""
-                    ach = input("donner le nom d'acheteur")
+                    ach = input("Veuillez entrer le nom de l'acheteur")
                     fact = open("factures.txt","r")
                     l = fact.readlines()
                     for i in l :
@@ -163,7 +160,7 @@ class menu(object):
                             print(i)
                     fact.close()
                 elif (reponse=="5"):
-                      os._exit(0)
+                      os._exit(0) #interaction avec le sys des fichiers 
                 else:
                     print("Wrong value")
                     
@@ -176,14 +173,13 @@ def accepter_connexions():
     while True:
         try:
             client, client_address = SERVER.accept()
-            client.send(bytes("write your name please !","utf8"))
+            client.send(bytes("Ecrivez votre nom !","utf8"))
             addresses[client] = client_address
             Thread(target=gerer_client, args=(client,)).start()
         except:
             print("")
             break
-        #                                                                             print("%s:%s have joined the auction." % client_address)
-        #client.send(bytes("Welcome to the application!", "utf8"))
+        
         
 
 
@@ -196,7 +192,7 @@ def gerer_client(client):
     global done
     if 1 :
         
-        client.send(bytes('welcome %s! ' % nom, "utf8"))
+        client.send(bytes('Bienvenue %s! ' % nom, "utf8"))
         tr = TestThreading()
         if (auction):
             client.send(bytes('There is an auction going on :'+reference+"("+str(prix)+")\n", "utf8"))
@@ -204,8 +200,6 @@ def gerer_client(client):
         else :
             client.send(bytes("There is no auction going on , please wait for a new auction", "utf8"))
            
-            #msg = "%s has joined the auction" % nom
-            #diffuser(bytes(msg, "utf8"))
         while True:
             
             clients[client] = nom
@@ -390,11 +384,10 @@ addresses = {}
 
 
 
-HOST = '192.168.1.49'
-PORT = 33000
-BUFSIZ = 1024
+HOST = '192.168.1.48'
+PORT = 50000
+BUFSIZ = 1024 #Nombre de bits par message 
 ADDR = (HOST, PORT)
-print(PORT)
 SERVER = socket(AF_INET, SOCK_STREAM) #le type du socket : SOCK_STREAM pour le protocole TCP
 SERVER.bind(ADDR)
 

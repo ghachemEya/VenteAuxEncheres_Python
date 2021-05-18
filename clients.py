@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter
@@ -31,8 +31,10 @@ def close_window ():
     
     scene.destroy()
 
+
+# definition des elements de notre  interface 
 scene = tkinter.Tk()
-scene.title("Auction Application")
+scene.title("Vente aux enchere - Application")
 
 messages_frame = tkinter.Frame(scene)
 my_msg = tkinter.StringVar()  # For the messages to be sent.
@@ -51,19 +53,18 @@ messages_frame.pack()
 entry_field = tkinter.Entry(scene, textvariable=my_msg)
 entry_field.bind("<Return>", send) #Return=la clé entrer du clavier #elle déclenche la méthode send
 entry_field.pack()
-send_button = tkinter.Button(scene, text="bid", command=send)
+send_button = tkinter.Button(scene, text="Envoyer", command=send)
 send_button.pack()
-button = tkinter.Button (scene, text = "Quit", command = close_window)
+button = tkinter.Button (scene, text = "Quitter", command = close_window)
 button.pack()
 
-#exitbtn = tkinter.Button(scene, text="Exit", command=exitc)
-#exitbtn.pack()
 
 
-HOST = '192.168.1.49'
+
+HOST = '192.168.1.48'
 if not HOST:
-    HOST= '192.168.1.49'
-PORT = 33000
+    HOST= '192.168.1.48'
+PORT = 50000
 if not PORT:
     PORT = 33000
 else:
@@ -76,7 +77,7 @@ try:
     client_socket.connect(ADDR)
     test = True
 except :
-    print("the server os offline")
+    print("Serveur est déconnecté")
     test = False
 if test :
     receive_thread = Thread(target=receive)

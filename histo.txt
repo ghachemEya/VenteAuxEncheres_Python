@@ -7,3 +7,11 @@ Eya                 |    50000       |    echec
 namee               |    80000       |    echec
 Eya                 |    20000000    |    echec
 namee               |    10000000000 |    succes
+------------------
+Priduit 5 :
+------------------
+Priduit 6 :
+Amani               |    1000        |    echec
+Amani               |    1200        |    echec
+Rim                 |    1400        |    echec
+Amani               |    1500        |    succes
